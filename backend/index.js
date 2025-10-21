@@ -14,7 +14,7 @@ dotenv.config();
 mongoose
   .connect(process.env.MONGO_URL)
   .then(() => {
-    console.log("MongoDB is connected");
+    console.log("✅ MongoDB is connected");
   })
   .catch((e) => {
     console.log(e);
@@ -31,12 +31,12 @@ app.use(
 );
 
 // Routes
-app.use("/api/users", userRoutes);
-app.use("/api/auth", authRoutes);
-app.use("/api/products", productRoutes);
-app.use("/api/cart", cartRoutes);
-app.use("/api/orders", orderRoutes);
-app.use("/api/payments", paymentRoutes);
+app.use("/users", userRoutes);
+app.use("/auth", authRoutes);
+app.use("/products", productRoutes);
+app.use("/cart", cartRoutes);
+app.use("/orders", orderRoutes);
+app.use("/payments", paymentRoutes);
 
 const PORT = process.env.PORT;
 
