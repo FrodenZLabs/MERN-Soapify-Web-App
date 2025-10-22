@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
+import path from "path";
 import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
 import userRoutes from "./routes/user.routes.js";
@@ -17,8 +18,10 @@ mongoose
     console.log("✅ MongoDB is connected");
   })
   .catch((e) => {
-    console.log(e);
+    console.log("❌ MongoDB Error:", e);
   });
+
+const __dirname = path.resolve();
 
 const app = express();
 app.use(cookieParser());
@@ -37,6 +40,15 @@ app.use("/products", productRoutes);
 app.use("/cart", cartRoutes);
 app.use("/orders", orderRoutes);
 app.use("/payments", paymentRoutes);
+
+// Serve frontend build in production
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "client/dist")));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "dist", "index.html"));
+  });
+}
 
 const PORT = process.env.PORT;
 
